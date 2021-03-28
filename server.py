@@ -16,7 +16,6 @@ app = Flask(__name__)
 # 409 - Conflict: è violato un vincolo di unicità. Ad esempio, esiste già un utente con la stessa mail registrata;
 # Come ultima spiaggia è buona norma ritornare "500 - Internal Server Error" per indicare che qualcosa è andato storto
 def getErrorCode(result: user.Result)->int:
-    
     if result is user.Result.NOT_FOUND:
         code = 404
     elif result is user.Result.NOT_AUTHORIZED:
@@ -35,7 +34,6 @@ def createUser():
     surname = data['surname']
     email = data['email']
     password = data['password']
-    
     result, u = user.SaveUser(name, surname, email, password)
 
     if result is not user.Result.OK:
@@ -90,9 +88,15 @@ def delete(id_utente):
         code = getErrorCode(result)
         return '',code
     else:
-        return '',200
-            
-            
+        result = user.deleteUser(id_utente)
+        if result is not user.Result.OK:
+            code = getErrorCode(result)
+            return '',code
+        else:
+            return '',200
+@app.route('/', methods=['GET'])
+def showNothing():
+    return "Nothing",200
 
 if __name__ == '__main__':
-    app.run(host='localhost',port=5000,debug=True)
+    app.run(host='0.0.0.0',port=5050,debug=True)

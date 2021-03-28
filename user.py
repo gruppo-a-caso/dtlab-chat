@@ -21,7 +21,7 @@ users = []
 # In python, le enumerazioni sono un particolare tipo di classe che ereditano da Enum.
 class Result(Enum):
     OK = 1
-    NOT_FOUND = 2 
+    NOT_FOUND = 2
     NOT_AUTHORIZED = 3
     DUPLICATED = 4
 
@@ -90,7 +90,6 @@ def deleteUser(idu:str)->(Result):
 def autenticazione(email:str, password:str, idu:str)->(Result):
     utente = findUserByID(idu)
     if utente is not None :
-        
         if utente['email'] == email :
             result,u = Login(email,password)
             return result
